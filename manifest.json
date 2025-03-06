@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "User Actions Recorder",
+  "version": "1.0",
+  "description": "Record user interactions on a webpage.",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "type": "module"
+    }
+  ],
+  "action": {
+    "default_icon": "icon.png"
+  },
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ]
+}

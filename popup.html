@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html id="extensionPopUp">
+  <head>
+    <title>User Actions</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 10px;
+        min-width: 400px;
+        max-width: 100%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        box-sizing: border-box;
+      }
+
+      h1 {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f4f4f4;
+      }
+
+      button:hover {
+        background-color: #e4e4e4;
+      }
+
+      #actions {
+        font-size: 14px;
+        margin-top: 10px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-y: auto;
+        height: calc(60vh);
+        width: calc(
+          100% - 40px
+        );
+        margin: 0 auto;
+      }
+
+      #actions table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      #actions th,
+      #actions td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      #actions td:hover {
+        background-color: #f0f0f0;
+        cursor: pointer;
+      }
+
+      #actions th {
+        background-color: #f4f4f4;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+
+      #actions tr {
+        cursor: pointer;
+      }
+
+      #exportCustomActions {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f4f4f4;
+      }
+
+      #exportCustomActions:hover {
+        background-color: #e4e4e4;
+      }
+
+      #editForm {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      #editForm input,
+      #editForm select {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
+      #editForm button {
+        width: 48%;
+        margin: 5px 1%;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f4f4f4;
+      }
+
+      #editForm .buttonWrapper {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      #editForm button:hover {
+        background-color: #e4e4e4;
+      }
+
+      #helpButton {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f4f4f4;
+      }
+
+      #actionButtons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        width: 100%;
+      }
+      #actionButtons button {
+        width: 30%;
+        padding: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f4f4f4;
+      }
+
+      #actionButtons button:hover {
+        background-color: #e4e4e4;
+      }
+
+      .selected {
+        background-color: #d3e4ff;
+        cursor: pointer;
+      }
+
+      #headerButtons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        width: 100%;
+      }
+
+      #headerButtons button {
+        width: 30%;
+        padding: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f4f4f4;
+      }
+
+      #headerButtons button:hover {
+        background-color: #e4e4e4;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>User Actions</h1>
+    <!-- Header buttons -->
+    <div id="headerButtons">
+      <button id="toggleRecording">Start Recording</button>
+      <button id="clearActions">Clear Recorded Actions</button>
+      <button id="exportCustomActions">Export as CustomActions</button>
+    </div>
+
+    <!-- Table to display actions -->
+    <div id="actions">
+      <table id="actionsTable">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Web Element Locator</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows will be dynamically added here -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Editable Form for Action Details -->
+    <div id="editForm" style="display: none">
+      <h2>Edit Action</h2>
+      <label for="actionDropdown">Action</label>
+      <select id="actionDropdown">
+        <option value="click">Click</option>
+        <option value="type">Type</option>
+        <option value="sendKey">Send Key</option>
+        <option value="select option">Select Option</option>
+      </select>
+      <label for="locatorInput">Web Element Locator</label>
+      <input
+        type="text"
+        id="locatorInput"
+        placeholder="Enter element locator"
+      />
+      <label for="valueInput">Value</label>
+      <input type="text" id="valueInput" placeholder="Enter value" />
+
+      <div class="buttonWrapper">
+        <button id="saveAction">Save</button>
+        <button id="cancelEdit">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div id="actionButtons" style="display: none">
+      <button id="addAction">Add</button>
+      <button id="editAction">Edit</button>
+      <button id="deleteAction">Delete</button>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+    <script type="module" src="content.js"></script>
+  </body>
+</html>

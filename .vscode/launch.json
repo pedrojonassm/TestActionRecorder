@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Chrome with Extension",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost/TestEndoToolSubQ/Dashboard/Index", 
+      "webRoot": "${workspaceFolder}",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", 
+      "runtimeArgs": [
+        "--remote-debugging-port=9222",
+        "--load-extension=${workspaceFolder}"
+      ],
+      "sourceMaps": true,
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}
