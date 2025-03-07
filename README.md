@@ -16,4 +16,4 @@ Upon instalation, click the extension icon. That should open a window like this:
 Clicking Start Recording button should start recording each action performed in an webpage.
 You can also add verification steps by right clicking while the tool is recording and selecting the "Test Action Recording" optionn and selecting one of the options in that sub-menu.
 
-The "Export as CustomActions" button exports the actions into a format recognized by a custom made framework of mine, eventually I plan on changing it into a Export as "Selenium button".
+The "Export as CustomActions" button exports the actions into a format recognized by a custom made framework of mine, eventually I plan on changing it into a "Export as Selenium" button.
