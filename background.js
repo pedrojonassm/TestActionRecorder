@@ -62,6 +62,13 @@ chrome.storage.local.get(['isRecording'], function(result) {
       parentId: 'userActionsMenu',
       contexts: ['all'],
     });
+
+    chrome.contextMenus.create({
+      id: 'verifyElementText',
+      title: 'Verify Element Text',
+      parentId: 'userActionsMenu',
+      contexts: ['all'],
+    });
   }
 });
 
@@ -86,6 +93,13 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
         parentId: 'userActionsMenu',
         contexts: ['all'],
       });
+
+      chrome.contextMenus.create({
+        id: 'verifyElementText',
+        title: 'Verify Element Text',
+        parentId: 'userActionsMenu',
+        contexts: ['all'],
+      });
     } else {
       // Remove the context menu if recording stops
       chrome.contextMenus.removeAll();
@@ -95,11 +109,15 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 
 // Handle context menu click
 chrome.contextMenus.onClicked.addListener((info, tab) => {
+  // Send a message to the content script to handle the right-clicked element
   if (info.menuItemId === 'verifyElementExists') {
-
-    // Send a message to the content script to handle the right-clicked element
     chrome.tabs.sendMessage(tab.id, {
       message: "verifyElementExists"
+    });
+  } 
+  else if (info.menuItemId === 'verifyElementText') {
+    chrome.tabs.sendMessage(tab.id, {
+      message: "verifyElementText"
     });
   }
 });
