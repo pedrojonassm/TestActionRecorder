@@ -36,29 +36,15 @@
 
       #actions {
         font-size: 14px;
-        margin-top: 10px;
-        white-space: pre-wrap;
         word-wrap: break-word;
-        overflow-y: auto;
-        height: calc(60vh);
-        width: calc(100% - 40px);
-        margin: 0 auto;
+        height: 400px;
+        width: 100%;
+        overflow: auto;
       }
 
       #actions table {
         width: 100%;
         border-collapse: collapse;
-        table-layout: fixed;
-      }
-
-      #actions th,
-      #actions td {
-        padding: 10px;
-        text-align: left;
-        border: 1px solid #ddd;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
 
       #actions td:hover {
@@ -70,7 +56,21 @@
         background-color: #f4f4f4;
         position: sticky;
         top: 0;
-        z-index: 1;
+      }
+
+      #actions th,
+      #actions td {
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #ddd;
+        white-space: wrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      th:first-child,
+      td:first-child {
+        border-left: 1px solid #ddd;
       }
 
       #actions tr {
