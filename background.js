@@ -1,8 +1,4 @@
-let popupWindowId = null; // Track the window ID
-
-chrome.runtime.onInstalled.addListener(() => {
-  console.log("Extension Installed");
-});
+let popupWindowId = null;
 
 // Listen for the extension icon click
 chrome.action.onClicked.addListener(() => {
@@ -69,9 +65,10 @@ chrome.storage.local.get(['isRecording'], function(result) {
   }
 });
 
-// Listen for changes in the recording state
+// Update context menus when recording starts/stops
 chrome.storage.onChanged.addListener((changes, areaName) => {
   if (areaName === 'local' && changes.isRecording) {
+    console.log("recording button clicked");
     const isRecording = changes.isRecording.newValue;
 
     // If recording state changes, update context menus accordingly
@@ -93,5 +90,16 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
       // Remove the context menu if recording stops
       chrome.contextMenus.removeAll();
     }
+  }
+});
+
+// Handle context menu click
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === 'verifyElementExists') {
+
+    // Send a message to the content script to handle the right-clicked element
+    chrome.tabs.sendMessage(tab.id, {
+      message: "verifyElementExists"
+    });
   }
 });

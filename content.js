@@ -238,3 +238,26 @@ const elementsWithRandomIds = [
   'buttonNoModalDialog',
   'buttonCancelModalDialog'
 ];
+
+let lastRightClickedElement = null; // Store the last element that was right clicked
+
+// Listen for the right-click event
+document.addEventListener('mouseup', function(event) {
+  if (event.button === 2) { // 2 corresponds to the right mouse button
+    lastRightClickedElement = event.target; // Save the element that was right-clicked
+  }
+});
+
+// Listener for the verify element exists action
+chrome.runtime.onMessage.addListener(function(request) {
+  if (request.message === "verifyElementExists") {
+    const { selector, selectorType } = getElementSelector(lastRightClickedElement);
+    const actionData = createAction('Verify Element Exists', selector, selectorType);
+
+    chrome.storage.local.get(['actions'], function(result) {
+      let actions = result.actions || [];
+      actions.push(actionData);
+      chrome.storage.local.set({ actions: actions });
+    });
+  }
+});

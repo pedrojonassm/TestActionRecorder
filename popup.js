@@ -386,11 +386,11 @@ helpButton.style.padding = '10px';
 helpButton.style.fontSize = '16px';
 helpButton.style.cursor = 'pointer';
 helpButton.style.border = '1px solid #ddd';
-helpButton.style.borderRadius = '50%'; // Circular button
+helpButton.style.borderRadius = '50%';
 helpButton.style.backgroundColor = '#f4f4f4';
-helpButton.style.width = '40px'; // Circular size
-helpButton.style.height = '40px'; // Circular size
-helpButton.style.textAlign = 'center'; // Center the ? symbol
+helpButton.style.width = '40px';
+helpButton.style.height = '40px';
+helpButton.style.textAlign = 'center';
 
 // Add the help button to the body
 document.body.appendChild(helpButton);
@@ -427,6 +427,12 @@ exportCustomActionsButton.addEventListener('click', function() {
           customActionsText += `actions.SelectOption(By.CssSelector("${action.selector}"), "${action.value}");\n`;
         } else if (action.selectorType === 'xpath') {
           customActionsText += `actions.SelectOption(By.XPath("${action.selector}"), "${action.value}");\n`;
+        }
+      } else if (action.type === 'Verify Element Exists') {
+        if (action.selectorType === 'css') {
+          customActionsText += `actions.verifyElementExists(By.CssSelector("${action.selector}"));\n`;
+        } else if (action.selectorType === 'xpath') {
+          customActionsText += `actions.verifyElementExists(By.XPath("${action.selector}"));\n`;
         }
       }
     });
