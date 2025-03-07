@@ -51,22 +51,22 @@ chrome.storage.local.get(['isRecording'], function(result) {
   // Create the context menu only if recording is active
   if (isRecording) {
     chrome.contextMenus.create({
-      id: 'userActionsMenu',
-      title: 'User Actions',
+      id: 'testActionMenu',
+      title: 'Test Action Recorder',
       contexts: ['all'], 
     });
 
     chrome.contextMenus.create({
       id: 'Verify Element Exists',
       title: 'Verify Element Exists',
-      parentId: 'userActionsMenu',
+      parentId: 'testActionMenu',
       contexts: ['all'],
     });
 
     chrome.contextMenus.create({
       id: 'Verify Element Text',
       title: 'Verify Element Text',
-      parentId: 'userActionsMenu',
+      parentId: 'testActionMenu',
       contexts: ['all'],
     });
   }
@@ -82,22 +82,22 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
     // Create the context menu if recording starts
     if (isRecording) {
       chrome.contextMenus.create({
-        id: 'userActionsMenu',
-        title: 'User Actions',
+        id: 'testActionMenu',
+        title: 'Test Action Recorder',
         contexts: ['all'],
       });
 
       chrome.contextMenus.create({
         id: 'Verify Element Exists',
         title: 'Verify Element Exists',
-        parentId: 'userActionsMenu',
+        parentId: 'testActionMenu',
         contexts: ['all'],
       });
 
       chrome.contextMenus.create({
         id: 'Verify Element Text',
         title: 'Verify Element Text',
-        parentId: 'userActionsMenu',
+        parentId: 'testActionMenu',
         contexts: ['all'],
       });
     } else {

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "User Actions Recorder",
+  "name": "Test Actions Recorder",
   "version": "1.0",
   "description": "Record user interactions on a webpage.",
   "background": {
