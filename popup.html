@@ -63,18 +63,18 @@
         padding: 8px;
         text-align: left;
         border: 1px solid #ddd;
-        white-space: wrap;
+        white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-      }
-
-      th:first-child,
-      td:first-child {
-        border-left: 1px solid #ddd;
+        max-width: 200px;
       }
 
       #actions tr {
         cursor: pointer;
+      }
+
+      #actions td:nth-child(1) {
+        width: 10px;
       }
 
       #exportCustomActions {
@@ -223,8 +223,10 @@
       <select id="actionDropdown">
         <option value="click">Click</option>
         <option value="type">Type</option>
-        <option value="sendKey">Send Key</option>
+        <!-- <option value="sendKey">Send Key</option> Removing send key from select option -->
         <option value="select option">Select Option</option>
+        <option value="Verify Element Exists">Verify Element Exists</option>
+        <option value="Verify Element Text">Verify Element Text</option>
       </select>
       <label for="locatorInput">Web Element Locator</label>
       <input

@@ -53,19 +53,17 @@ function loadActions() {
 
         // Create Web Element Locator column
         const locatorCell = document.createElement('td');
-        const truncatedLocator = action.selector.length > 50 ? action.selector.substring(0, 50) + '...' : action.selector;
-        locatorCell.textContent = truncatedLocator;
+        locatorCell.textContent = action.selector;
         locatorCell.title = action.selector;  // Full value in the title for hover effect
         row.appendChild(locatorCell);
 
         // Create Value column (only for 'type' and other specific actions with values)
         const valueCell = document.createElement('td');
-        if (action.type === 'type' || action.type === 'sendKey' || action.type === 'select option') {
-          const truncatedValue = action.value && action.value.length > 10 ? action.value.substring(0, 10) + '...' : action.value;
-          valueCell.textContent = truncatedValue;
+        if (action.type === 'type' || action.type === 'sendKey' || action.type === 'select option' || action.type === 'Verify Element Text') {
+          valueCell.textContent = action.value;
           valueCell.title = action.value;  // Full value in the title for hover effect
-        } else {
-          valueCell.textContent = ''; // No value for click actions
+        } else if (action.type === 'click' || action.type === 'Verify Element Exists') {
+          valueCell.textContent = ''; // No value for click actions or verify element exists
         }
         row.appendChild(valueCell);
 
@@ -128,8 +126,8 @@ clearActionsButton.addEventListener('click', function() {
 actionDropdown.addEventListener('change', () => {
   const selectedActionType = actionDropdown.value;
   
-  // If the action type is 'click', disable
-  if (selectedActionType === 'click') {
+  // If the action type is 'click' or 'Verify Element Exists', disable
+  if (selectedActionType === 'click' || selectedActionType === 'Verify Element Exists') {
     valueInput.value = '';
     valueInput.disabled = true;
     valueInput.style.backgroundColor = "#f0f0f0"; 
@@ -170,7 +168,7 @@ function editAction(index) {
     locatorInput.value = action.selector;
     valueInput.value = action.value || '';
 
-    if (action.type === 'click') {
+    if (action.type === 'click' || action.type === 'Verify Element Exists') {
       valueInput.value = ''; // Clear value
       valueInput.disabled = true;
       valueInput.style.backgroundColor = "#f0f0f0"; // Grey out
@@ -430,9 +428,18 @@ exportCustomActionsButton.addEventListener('click', function() {
         }
       } else if (action.type === 'Verify Element Exists') {
         if (action.selectorType === 'css') {
-          customActionsText += `actions.verifyElementExists(By.CssSelector("${action.selector}"));\n`;
+          customActionsText += `actions.verifyElementExists(actions, By.CssSelector("${action.selector}"));\n`;
         } else if (action.selectorType === 'xpath') {
-          customActionsText += `actions.verifyElementExists(By.XPath("${action.selector}"));\n`;
+          customActionsText += `actions.verifyElementExists(actions, By.XPath("${action.selector}"));\n`;
+        }
+      } else if (action.type === 'Verify Element Text') {
+        // Clean up line breaks and unnecessary white spaces
+        let cleanText = action.value.replace(/\n/g, '').replace(/\s+/g, ' ').trim();
+
+        if (action.selectorType === 'css') {
+          customActionsText += `actions.getTextAndCompare(actions, By.CssSelector("${action.selector}"), "${cleanText}");\n`;
+        } else if (action.selectorType === 'xpath') {
+          customActionsText += `actions.getTextAndCompare(actions, By.XPath("${action.selector}"), "${cleanText}");\n`;
         }
       }
     });

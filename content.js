@@ -1,11 +1,16 @@
 // Function to create an action entry
 function createAction(type, selector, selectorType, value = null) {
-  return {
+  if (value != null && value != "") {
+    value = value.replace(/\n/g, '').replace(/\s+/g, ' ').trim();
+  }
+  let action = {
     type: type,
     selector: selector,
     selectorType: selectorType,
     value: value
   };
+
+  return action;
 }
 
 // Capture clicks
@@ -244,15 +249,33 @@ let lastRightClickedElement = null; // Store the last element that was right cli
 // Listen for the right-click event
 document.addEventListener('mouseup', function(event) {
   if (event.button === 2) { // 2 corresponds to the right mouse button
-    lastRightClickedElement = event.target; // Save the element that was right-clicked
+    // Save the element that was right-clicked
+    lastRightClickedElement = {
+      element: event.target,
+      elementText: event.target.innerText
+    }
   }
 });
 
 // Listener for the verify element exists action
 chrome.runtime.onMessage.addListener(function(request) {
-  if (request.message === "verifyElementExists") {
-    const { selector, selectorType } = getElementSelector(lastRightClickedElement);
+  if (request.message === "Verify Element Exists") {
+    const { selector, selectorType } = getElementSelector(lastRightClickedElement.element);
     const actionData = createAction('Verify Element Exists', selector, selectorType);
+
+    chrome.storage.local.get(['actions'], function(result) {
+      let actions = result.actions || [];
+      actions.push(actionData);
+      chrome.storage.local.set({ actions: actions });
+    });
+  }
+});
+
+// Listener for the verify element text action
+chrome.runtime.onMessage.addListener(function(request) {
+  if (request.message === "Verify Element Text") {
+    const { selector, selectorType } = getElementSelector(lastRightClickedElement.element);
+    const actionData = createAction('Verify Element Text', selector, selectorType, lastRightClickedElement.elementText);
 
     chrome.storage.local.get(['actions'], function(result) {
       let actions = result.actions || [];
