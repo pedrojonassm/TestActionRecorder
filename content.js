@@ -167,11 +167,11 @@ function getElementSelector(element) {
   }
 
   // If the element text uniquely identifies the element, return it
-  if (element.textContent.trim() && isTextUnique(element)) {
-    selectorType = 'xpath';
-    selector = getTextSelector(element);
-    return { selector, selectorType };
-  }
+  // if (element.textContent.trim() && isTextUnique(element)) {
+  //   selectorType = 'xpath';
+  //   selector = getTextSelector(element);
+  //   return { selector, selectorType };
+  // }
 
   // Navigate through parents until unique id or class is found
   // If neither a unique id / class are found, return full path once html tag is reached.
@@ -203,7 +203,7 @@ function getElementSelector(element) {
     }
     // Check if a unique class is found
     else if (currentElement.className && isClassunique(currentElement)) {
-      selector = `.${currentElement.className.split(' ')[0]}${parentSelector}`;
+      selector = getClassSelector(currentElement);
       return { selector, selectorType };
     }
     // If the html tag is reached, add it to the selector
